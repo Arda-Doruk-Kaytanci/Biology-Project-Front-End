@@ -1,5 +1,5 @@
 .search-filter-input {
-    margin-top: 5rem;
+    margin-top: 3rem;
     width: 20%;
     height: 2rem;
     text-justify: auto;
@@ -7,5 +7,15 @@
     border-radius: 5px;
     background-color: #A1BA89;
     display: flex;
-    justify-self: center;
+    justify-self: right;
+    margin-right: 9.5rem;
+    border: 1px rgb(33, 109, 24) solid;
+}
+
+.crops-container{
+    display: grid;
+    margin-left: 9.5vw;
+    grid-template-columns: 25vw 25vw 25vw;
+    grid-template-rows: auto;
+    column-gap: 3vw;
 }

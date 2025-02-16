@@ -177,6 +177,8 @@ function Resources() {
                     <li className="anchor-li"><a className="link-anchor" href="https://unsplash.com">https://unsplash.com</a></li>
                     <li className="anchor-li"><a className="link-anchor" href="https://axios-http.com">https://axios-http.com</a></li>
                     <li className="anchor-li"   ><a className="link-anchor" href="https://cssgridgenerator.io">https://cssgridgenerator.io</a></li>
+                    <li className="anchor-li"   ><a className="link-anchor" href="https://ucanr.edu">https://ucanr.edu</a></li>
+                    <li className="anchor-li"   ><a className="link-anchor" href="https://www.fao.org">https://www.fao.org</a></li>
                 </ul>
             </section>
         </div>

@@ -1,0 +1,39 @@
+.crop-link-container {
+    border: 3px solid #3A2D32;
+    border-radius: 5px;
+    max-width: 25vw;
+    height: max-content;
+    text-align: center;
+    background: rgb(141, 159, 100);
+    transition: transform 0.3s linear;
+}
+
+.crop-link-container:hover {
+    transform: scale(1.05);
+}
+
+.crop-link-container img {
+    border-radius: 3px;
+    border: 3px solid #3A2D32;
+    margin-top: 2rem;
+    width: 20vw;
+    height: 25vh;
+}
+
+.crop-link-container h1 {
+    margin-top: 1rem;
+    color: #5a4b29;
+}
+
+.crop-link-element {
+    text-decoration: none;
+}
+
+.crop-link-element p {
+    font-size: 1.35rem;
+    margin-top: 1rem;
+    text-decoration: none;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: #5a4b29;
+}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../Css Files/OptimizeYourEnvironment.css";
 import { Line, Bar } from "react-chartjs-2";
 import {
@@ -15,6 +15,7 @@ import {
 } from "chart.js";
 
 import axios from 'axios'
+import { CropContext } from "../CropsContext";
 
 ChartJS.register(
     CategoryScale,
@@ -33,8 +34,8 @@ ChartJS.register(
 const OptimizationSystem = () => {
     const [inputs, setInputs] = useState({
         floor: 1,
-        area: 100,
-        balcony_size: 100,
+        area: "",
+        balcony_size: "",
         devices: [],
     });
 
@@ -64,80 +65,7 @@ const OptimizationSystem = () => {
 
     const [livingData, setLivingData] = useState([])
 
-    const plantDatabase = [
-        { name: "Domates", suitableFor: "ılıman", spaceRequirement: 2, description: "Orta veya büyük balkonlar için uygundur. Bol güneş ışığına ihtiyaç duyar." },
-        { name: "Biber", suitableFor: "ılıman", spaceRequirement: 1.5, description: "Orta büyüklükte balkonlar için uygundur. Bol güneş ışığı sever." },
-        { name: "Salatalık", suitableFor: "ılıman", spaceRequirement: 1.5, description: "Güneşli alanlarda iyi yetişir, orta büyüklükte balkonlara uygundur." },
-        { name: "Marul", suitableFor: "ılıman", spaceRequirement: 1, description: "Hızlı büyüyen ve küçük ila orta boyutlu balkonlar için uygundur." },
-        { name: "Kabak", suitableFor: "ılıman", spaceRequirement: 4, description: "Büyük alanlar ve iyi drenajlı toprak için uygundur." },
-        { name: "Fesleğen", suitableFor: "ılıman", spaceRequirement: 0.5, description: "Küçük balkonlarda kolayca yetişir, mutfak için uygundur." },
-        { name: "Roka", suitableFor: "ılıman", spaceRequirement: 1, description: "Hızlı büyüyen, mutfak için uygun bir bitkidir." },
-        { name: "Nane", suitableFor: "ılıman", spaceRequirement: 0.5, description: "Az yer kaplar ve hoş bir aroma sağlar." },
-        { name: "Maydanoz", suitableFor: "ılıman", spaceRequirement: 0.5, description: "Küçük balkonlarda kolayca yetişir." },
-        { name: "Dereotu", suitableFor: "ılıman", spaceRequirement: 0.5, description: "Küçük balkonlarda kolayca yetişir, mutfakta kullanılabilir." },
-        { name: "Çilek", suitableFor: "ılıman", spaceRequirement: 1, description: "Küçük alanlarda kolayca yetişir, tatlı ve lezzetli meyveler sunar." },
-        { name: "Karpuz", suitableFor: "sıcak", spaceRequirement: 5, description: "Büyük alanlarda yetişir, sıcak iklimlerde büyür." },
-        { name: "Üzüm Asması", suitableFor: "ılıman", spaceRequirement: 3, description: "Gölge sağlayan dekoratif bir bitkidir." },
-        { name: "Tropikal Çiçekler", suitableFor: "sıcak", spaceRequirement: 3, description: "Büyük, güneşli balkonlarda güzel dekoratif bitkiler." },
-        { name: "Ayçiçeği", suitableFor: "ılıman", spaceRequirement: 2, description: "Güneşli balkonlarda büyüyen dekoratif ve faydalı bir bitkidir." },
-        { name: "Havuç", suitableFor: "soğuk", spaceRequirement: 1, description: "Küçük kaplarda yetişir, soğuk iklimlerde büyür." },
-        { name: "Patates", suitableFor: "ılıman", spaceRequirement: 2, description: "Orta büyüklükteki alanlar için uygundur." },
-        { name: "Soğan", suitableFor: "soğuk", spaceRequirement: 1, description: "Küçük alanlarda yetişir ve soğuk iklimlere uygundur." },
-        { name: "Sarımsak", suitableFor: "ılıman", spaceRequirement: 0.5, description: "Az yer kaplar, mutfak kullanımı için idealdir." },
-        { name: "Bambu", suitableFor: "ılıman", spaceRequirement: 8, description: "Büyük balkonlarda dekoratif bir bitki olarak uygundur." },
-        { name: "Lavanta", suitableFor: "ılıman", spaceRequirement: 1, description: "Dekoratif ve hoş kokulu bir bitki, güneşli alanları sever." },
-        { name: "Nergis", suitableFor: "ılıman", spaceRequirement: 0.5, description: "Küçük balkonlarda yetişebilen dekoratif bir bitkidir." },
-        { name: "Orkide", suitableFor: "ılıman", spaceRequirement: 0.5, description: "Dekoratif bir çiçek, dikkatli bakım gerektirir." },
-        { name: "Karanfil", suitableFor: "ılıman", spaceRequirement: 0.5, description: "Dekoratif bir çiçek, küçük alanlarda yetişir." },
-        { name: "Sukulentler", suitableFor: "sıcak", spaceRequirement: 0.5, description: "Sıcak iklimlerde az yer kaplar ve kolayca yetişir." },
-        { name: "Kaktüs", suitableFor: "sıcak", spaceRequirement: 0.5, description: "Sıcak ve kurak koşullarda kolayca yetişir." },
-        { name: "Çam Fidanı", suitableFor: "soğuk", spaceRequirement: 20, description: "Soğuk iklimlerde büyük alanlar için uygundur." },
-        { name: "Zencefil", suitableFor: "sıcak", spaceRequirement: 2, description: "Sıcak iklimlerde yetişir ve tıbbi faydalar sağlar." },
-        { name: "Nar", suitableFor: "ılıman", spaceRequirement: 8, description: "Dekoratif bir ağaç, ılıman iklimlerde yetişir." },
-        { name: "Ahududu", suitableFor: "ılıman", spaceRequirement: 3, description: "Tatlı meyve, orta büyüklükte balkonlar için uygundur." },
-        { name: "Böğürtlen", suitableFor: "ılıman", spaceRequirement: 2, description: "Orta büyüklükte balkonlar için uygundur." },
-        { name: "Ananas", suitableFor: "sıcak", spaceRequirement: 6, description: "Sıcak iklimlerde yetişir, dikkatli bakım gerektirir." },
-        { name: "Hardal", suitableFor: "ılıman", spaceRequirement: 2, description: "Baharat bitkisi olarak yetiştirilir." },
-        { name: "Adaçayı", suitableFor: "ılıman", spaceRequirement: 1, description: "Tıbbi ve mutfak kullanımı için uygundur." },
-        { name: "Kekik", suitableFor: "ılıman", spaceRequirement: 1, description: "Küçük balkonlarda kolayca yetişir." },
-        { name: "Kavun", suitableFor: "ılıman", spaceRequirement: 4, description: "Büyük balkonlarda yetişir ve sıcak yazlarda büyüme gösterir." },
-        { name: "Turp", suitableFor: "soğuk", spaceRequirement: 1, description: "Küçük balkonlarda ve soğuk iklimlerde yetişebilir." },
-        { name: "Brokoli", suitableFor: "soğuk", spaceRequirement: 2, description: "Soğuk iklimlerde yetişen besleyici bir sebzedir." },
-        { name: "Enginar", suitableFor: "ılıman", spaceRequirement: 3, description: "Güneşli balkonlarda büyüyen dayanıklı bir bitkidir." },
-        { name: "Papaya", suitableFor: "sıcak", spaceRequirement: 8, description: "Sıcak iklimlerde ve geniş balkonlarda yetişebilir." },
-        { name: "Avokado", suitableFor: "sıcak", spaceRequirement: 12, description: "Sıcak iklimlerde büyük balkonlarda yetişir." },
-        { name: "Kayısı", suitableFor: "ılıman", spaceRequirement: 8, description: "Ilıman iklimlerde balkonlarda yetişen tatlı bir meyvedir." },
-        { name: "Fesleğen Mor", suitableFor: "ılıman", spaceRequirement: 0.5, description: "Dekoratif bir bitkidir ve mutfaklarda sıkça kullanılır." },
-        { name: "Çam Fıstığı", suitableFor: "soğuk", spaceRequirement: 20, description: "Soğuk iklimlerde geniş alanlarda yetişir." },
-        { name: "Kivi", suitableFor: "ılıman", spaceRequirement: 6, description: "Tırmanıcı yapısıyla dikey alanlar için uygundur." },
-        { name: "Ananas", suitableFor: "sıcak", spaceRequirement: 5, description: "Tropik balkonlarda yetişir ve dikkatli bakım gerektirir." },
-        { name: "Karnabahar", suitableFor: "soğuk", spaceRequirement: 2, description: "Soğuk havalarda yetişir ve küçük balkonlar için uygundur." },
-        { name: "Yer Fıstığı", suitableFor: "sıcak", spaceRequirement: 3, description: "Sıcak iklimlerde yetişen faydalı bir bitkidir." },
-        { name: "Kivi Asması", suitableFor: "ılıman", spaceRequirement: 5, description: "Orta büyüklükte balkonlarda gölge sağlayabilir." },
-        { name: "Patlıcan", suitableFor: "ılıman", spaceRequirement: 2, description: "Bol güneşli alanları seven dayanıklı bir sebzedir." },
-        { name: "Hardal Otu", suitableFor: "ılıman", spaceRequirement: 1, description: "Ilıman iklimlerde küçük balkonlarda yetişebilir." },
-        { name: "Arpa", suitableFor: "soğuk", spaceRequirement: 4, description: "Soğuk iklimlerde yetişen faydalı bir tahıldır." },
-        { name: "Buğday", suitableFor: "ılıman", spaceRequirement: 5, description: "Tahıl olarak kullanılabilir ve geniş balkonlarda yetişir." },
-        { name: "Mısır", suitableFor: "ılıman", spaceRequirement: 6, description: "Büyük balkonlarda yetişebilen bir sebzedir." },
-        { name: "Zencefil", suitableFor: "sıcak", spaceRequirement: 2, description: "Tıbbi özelliklere sahip bir bitki, sıcak iklimlerde yetişir." },
-        { name: "Adaçayı", suitableFor: "ılıman", spaceRequirement: 0.5, description: "Tıbbi bitki olarak bilinir ve küçük balkonlara uygundur." },
-        { name: "Melisa", suitableFor: "ılıman", spaceRequirement: 0.5, description: "Hoş bir kokuya sahip, küçük alanlarda yetişir." },
-        { name: "Tere", suitableFor: "soğuk", spaceRequirement: 0.5, description: "Soğuk iklimlerde küçük balkonlarda yetişebilir." },
-        { name: "Lahana", suitableFor: "soğuk", spaceRequirement: 3, description: "Soğuk iklimlerde geniş alanlarda yetişir." },
-        { name: "Mango", suitableFor: "sıcak", spaceRequirement: 12, description: "Tropik iklimlerde ve geniş balkonlarda yetişebilir." },
-        { name: "Kavun", suitableFor: "sıcak", spaceRequirement: 6, description: "Sıcak yaz aylarında yetişen tatlı bir meyvedir." },
-        { name: "Anason", suitableFor: "ılıman", spaceRequirement: 0.5, description: "Tıbbi ve mutfak kullanımı için uygundur." },
-        { name: "Kekik Dağ", suitableFor: "soğuk", spaceRequirement: 0.5, description: "Dağ iklimine uygun, az yer kaplayan bir bitkidir." },
-        { name: "Böğürtlen", suitableFor: "ılıman", spaceRequirement: 2, description: "Tatlı meyve veren, orta büyüklükte balkonlar için uygundur." },
-        { name: "Ahududu", suitableFor: "ılıman", spaceRequirement: 2, description: "Orta büyüklükte balkonlarda yetişebilen tatlı bir bitkidir." },
-        { name: "Lale", suitableFor: "ılıman", spaceRequirement: 0.5, description: "Dekoratif bir çiçek, küçük balkonlarda yetişebilir." },
-        { name: "Nane Çeşitleri", suitableFor: "ılıman", spaceRequirement: 0.5, description: "Farklı nane türleri küçük alanlarda yetişir." },
-        { name: "Papatya", suitableFor: "ılıman", spaceRequirement: 0.5, description: "Küçük alanlarda yetişen hoş kokulu bir bitkidir." },
-        { name: "Yonca", suitableFor: "soğuk", spaceRequirement: 1, description: "Soğuk iklimlerde küçük balkonlar için uygundur." },
-        { name: "Börülce", suitableFor: "ılıman", spaceRequirement: 1, description: "Orta büyüklükte balkonlarda yetişebilir." },
-        { name: "Kivi Asması", suitableFor: "ılıman", spaceRequirement: 6, description: "Orta büyüklükte balkonlarda gölge sağlayabilir." },
-        { name: "Ebegümeci", suitableFor: "ılıman", spaceRequirement: 1, description: "Tıbbi özellikleri olan ve kolayca yetişen bir bitkidir." },
-    ];
+    const plantDatabase = useContext(CropContext)
 
     function recommendPlants(weatherData, balconyArea) {
         if (!Array.isArray(weatherData) || weatherData.length === 0) {
@@ -150,18 +78,15 @@ const OptimizationSystem = () => {
 
         console.log("30 Yıllık Ortalama Sıcaklık:", averageTemperature);
 
-        let climate;
-        if (averageTemperature < 10) {
-            climate = "soğuk";
-        } else if (averageTemperature >= 10 && averageTemperature <= 20) {
-            climate = "ılıman";
-        } else {
-            climate = "sıcak";
-        }
-
         const suitablePlants = plantDatabase.filter(
-            (plant) => plant.suitableFor === climate && plant.spaceRequirement <= balconyArea
-        );
+            (plant) =>
+              plant.preferredTemperature.min < averageTemperature &&
+              plant.preferredTemperature.max > averageTemperature &&
+              plant.spaceRequirement <= balconyArea - 5 &&
+              plant.altitude.min < altitude &&
+              plant.altitude.max > altitude
+          );
+          
 
         if (suitablePlants.length === 0) {
             return [];
@@ -219,9 +144,6 @@ const OptimizationSystem = () => {
 
     const fetchWeatherData = async (firstDate, lastDate) => {
         try {
-            console.log("Start Date:", startDate);
-            console.log("End Date:", usefulDate);
-
             const response = await axios.get("https://archive-api.open-meteo.com/v1/archive", {
                 params: {
                     latitude: location.latitude,
@@ -331,6 +253,7 @@ const OptimizationSystem = () => {
                         type="number"
                         defaultValue={device.watt}
                         onBlur={(e) => handleInputChange(e, index, "watt")}
+                        required
                     />
                 </label>
                 <label>
@@ -340,6 +263,7 @@ const OptimizationSystem = () => {
                         type="number"
                         defaultValue={device.hours}
                         onBlur={(e) => handleInputChange(e, index, "hours")}
+                        required
                     />
                 </label>
                 <button type="button" className="delete-btn" onClick={() => removeDevice(index)}>
@@ -354,9 +278,6 @@ const OptimizationSystem = () => {
         e.preventDefault();
         setLoading(true);
         setError(null);
-        console.log(startDate)
-        console.log(usefulDate)
-        console.log("fetching data bio")
         fetchBiodiversityData(location.latitude, location.longitude)
         let electricity = calculateElectricity(weather, inputs.devices, inputs.area)
         try {
@@ -489,7 +410,6 @@ const OptimizationSystem = () => {
     };
 
     const generateBiodiversityChartData = () => {
-        console.log(livingData)
         if (!Array.isArray(livingData) || livingData.length === 0) {
             console.error("livingData is invalid:", livingData);
             return {};
@@ -528,7 +448,6 @@ const OptimizationSystem = () => {
             }));
 
             setLivingData(speciesCounts);
-            console.log(speciesCounts)
         } catch (error) {
             console.error("Error fetching biodiversity data:", error);
             setError("Failed to fetch biodiversity data.");
@@ -537,6 +456,7 @@ const OptimizationSystem = () => {
 
 
 
+   
     function calculateElectricity(weatherData, devices, area) {
         if (isNaN(area) || area <= 0) {
             console.error("Invalid area:", area);
@@ -586,6 +506,7 @@ const OptimizationSystem = () => {
         console.log("Energy Usage for Last 10 Months:", energyUsage);
         return energyUsage;
     }
+      
 
     return (
 
@@ -614,6 +535,7 @@ const OptimizationSystem = () => {
                             name="floor"
                             value={inputs.floor}
                             onChange={handleInputChange}
+                            required
                         />
                     </label>
                     <label>
@@ -627,6 +549,7 @@ const OptimizationSystem = () => {
                             name="area"
                             value={inputs.area}
                             onChange={handleInputChange}
+                            required
                         />
                     </label>
                     <label>
@@ -638,6 +561,7 @@ const OptimizationSystem = () => {
                             name="balcony_size"
                             value={inputs.balcony_size}
                             onChange={handleInputChange}
+                            required
                         />
                     </label>
                     <button type="submit" id="submit-btn" disabled={loading}>

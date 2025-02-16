@@ -1,18 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../Css Files/ComponentCss/CropsCategory.css";
-const Crops = [1, 1, 2, 3, 3, 4, 4];
+import CropLink from "./Components/CropLink";
+import { CropContext } from "../CropsContext";
+
 
 function CropsCategory() {
-  const [displayCrops, setDisplayCrops] = useState(Crops);
-  const [searchParameter, setSearchParameter] = useState("");
-
+  const context = useContext(CropContext);
+  const [displayCrops, setDisplayCrops] = useState(context);
+  
   function filterCrops(e) {
+    console.log(e.target.value);
+    console.log(displayCrops);
+    console.log(typeof e.target.value);
     e.preventDefault();
-    setSearchParameter(e.target.value);
-    Crops.filter(
-      (item) => item?.name.toUpperCase() !== e.target.value.toUpperCase()
-    );
-  } 
+    if (e.target.value === "") {
+      setDisplayCrops(context);
+    } else {
+      setDisplayCrops(
+        displayCrops.filter((item) =>
+          String(item?.name)
+            .toLowerCase()
+            .includes(String(e.target.value).toLowerCase())
+        )
+      );
+    }
+  }
   return (
     <div className="crops-category-container">
       <input
@@ -22,7 +34,12 @@ function CropsCategory() {
         placeholder="Bitki Arayın"
       ></input>
       <div className="crops-container">
-        {displayCrops && displayCrops.map((item) => <>Arda</>)}
+        {displayCrops &&
+          displayCrops.map((item, index) => (
+            <div key={index}>
+              <CropLink name={item.name} img={item.src} />{" "}
+            </div>
+          ))}
       </div>
     </div>
   );
