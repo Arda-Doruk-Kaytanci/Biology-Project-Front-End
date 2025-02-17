@@ -66,15 +66,16 @@ const OptimizationSystem = () => {
     const [livingData, setLivingData] = useState([])
 
     const plantDatabase = useContext(CropContext)
-
     function recommendPlants(weatherData, balconyArea) {
         if (!Array.isArray(weatherData) || weatherData.length === 0) {
             throw new Error("Geçersiz hava durumu verisi sağlandı.");
         }
 
+        console.log(plantDatabase)
+
         const reversedTemperatures = [...weatherData].reverse();
 
-        const averageTemperature = reversedTemperatures.reduce((sum, temp) => sum + temp, 0) / reversedTemperatures.length;
+        const averageTemperature = (reversedTemperatures.reduce((sum, temp) => sum + temp, 0) / reversedTemperatures.length) + 1
 
         console.log("30 Yıllık Ortalama Sıcaklık:", averageTemperature);
 
@@ -82,20 +83,20 @@ const OptimizationSystem = () => {
             (plant) =>
               plant.preferredTemperature.min < averageTemperature &&
               plant.preferredTemperature.max > averageTemperature &&
-              plant.spaceRequirement <= balconyArea - 5 &&
+              plant.spaceRequired < balconyArea - 5 &&
               plant.altitude.min < altitude &&
-              plant.altitude.max > altitude
+              plant.altitude.max + 1000 > altitude 
           );
           
-
+          console.log(suitablePlants)
         if (suitablePlants.length === 0) {
             return [];
         }
         return suitablePlants.map((plant) => ({
             name: plant.name,
-            description: plant.description,
-            spaceRequirement: plant.spaceRequirement,
-            amount: Math.round((balconyArea - 5) / plant.spaceRequirement)
+            description: plant.shortDescription,
+            spaceRequirement: plant.spaceRequired,
+            amount: Math.round((balconyArea - 5) / plant.spaceRequired)
         }));
     }
     useEffect(() => {
