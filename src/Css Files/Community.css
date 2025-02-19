@@ -1,0 +1,16 @@
+.tag-select{
+    margin-top: 3rem;
+    width: 10%;
+    height: 2.2rem;
+    text-justify: auto;
+    padding: 0.2rem;
+    border-radius: 5px;
+    background-color: #A1BA89;
+    display: flex;
+    justify-self: right;
+    margin-right: 9.5rem;
+    font-size: 1.4rem;
+    padding: auto;
+    text-align: center;
+    border: 1px rgb(33, 109, 24) solid;
+}

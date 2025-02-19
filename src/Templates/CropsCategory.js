@@ -37,7 +37,7 @@ function CropsCategory() {
         {displayCrops &&
           displayCrops.map((item, index) => (
             <div key={index}>
-              <CropLink name={item.name} img={item.src} />{" "}
+              <CropLink name={item.name} img={item.src} />
             </div>
           ))}
       </div>

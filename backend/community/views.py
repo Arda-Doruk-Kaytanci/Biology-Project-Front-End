@@ -1,96 +1,78 @@
 from rest_framework import generics, status
-from rest_framework.throttling import UserRateThrottle
-from rest_framework.pagination import BasePagination
 from rest_framework.response import Response
-from .models import PostModels
-from .serializers import PostSerializer, CommentSerialzer
+from .models import PostModels, CommentModel
+from .serializers import PostSerializer, CommentSerializer
 
 
-class PostView(generics.ListAPIView):
+class PostListView(generics.ListAPIView):
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        post_tag = self.request.query_params.get("tag")
+        if post_tag == "All":
+            return PostModels.objects.all()
+        return PostModels.objects.filter(tag=post_tag)
+
+
+class PostDetailView(generics.RetrieveAPIView):
     queryset = PostModels.objects.all()
-    throttle_classes = [UserRateThrottle]
-    serializer_class = PostSerializer
-    pagination_class = BasePagination
-
-
-class GeneralPostView(generics.ListCreateAPIView):
-    queryset = PostModels.objects.filter(tag="General")
-    throttle_classes = [UserRateThrottle]
-    serializer_class = PostSerializer
-    pagination_class = BasePagination
-
-
-class AdvisePostView(generics.ListCreateAPIView):
-    queryset = PostModels.objects.filter(tag="Advise")
-    throttle_classes = [UserRateThrottle]
-    serializer_class = PostSerializer
-    pagination_class = BasePagination
-
-
-class HelpPostView(generics.ListCreateAPIView):
-    queryset = PostModels.objects.filter(tag="Help")
-    throttle_classes = [UserRateThrottle]
-    serializer_class = PostSerializer
-    pagination_class = BasePagination
-
-
-class GeneralPostViewSingle(generics.RetrieveAPIView):
-    queryset = PostModels.objects.filter(tag="General")
     serializer_class = PostSerializer
 
 
-class HelpPostViewSingle(generics.RetrieveAPIView):
-    queryset = PostModels.objects.filter(tag="Help")
-    serializer_class = PostSerializer
-
-
-class AdvisePostViewSingle(generics.RetrieveAPIView):
-    queryset = PostModels.objects.filter(tag="Advise")
-    serializer_class = PostSerializer
-
-
-class AddCommentView(generics.CreateAPIView):
-    serializer_class = CommentSerialzer
+class CommentCreateView(generics.CreateAPIView):
+    serializer_class = CommentSerializer
 
     def create(self, request, *args, **kwargs):
-        tag = request.data.get("tag")
-        post_id = request.data.get("id")
+        post_id = request.data.get("post")
+        if not post_id:
+            return Response(
+                {"error": "post_id is required."}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            post = PostModels.objects.get(id=post_id)
+        except PostModels.DoesNotExist:
+            return Response(
+                {"error": "Post not found."}, status=status.HTTP_404_NOT_FOUND
+            )
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        if post_id:
-            try:
-                post = PostModels.objects.get(id=post_id, tag=tag)
-                serializer.save(post=post)
-            except PostModels.DoesNotExist:
-                return Response(
-                    {"error": "Post not found."}, status=status.HTTP_404_NOT_FOUND
-                )
-        else:
-            serializer.save()
+        serializer.save(post=post)
         headers = self.get_success_headers(serializer.data)
         return Response(
             serializer.data, status=status.HTTP_201_CREATED, headers=headers
         )
 
 
-class GetCommentView(generics.ListAPIView):
-    serializer_class = CommentSerialzer
+class PostCreateView(generics.CreateAPIView):
+    serializer_class = PostSerializer
 
-    def list(self, request, *args, **kwargs):
-        post_id = request.query_params.get("id")
-        tag = request.query_params.get("tag")
-        if not post_id or not tag:
+    def create(self, request, *args, **kwargs):
+        post_name = request.data.get("post_name")
+        tag = request.data.get("tag")
+        attachments = request.data.get("attachments")
+
+        if not (post_name and tag and attachments):
             return Response(
-                {"error": "Both 'id' and 'tag' parameters are required."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        try:
-            post = PostModels.objects.get(id=post_id, tag=tag)
-        except PostModels.DoesNotExist:
-            return Response(
-                {"error": "Post not found."}, status=status.HTTP_404_NOT_FOUND
+                {"error": "post_name is required."}, status=status.HTTP_400_BAD_REQUEST
             )
 
-        comments = post.commentmodel_set.all()
-        serializer = self.get_serializer(comments, many=True)
-        return Response(serializer.data)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
+
+
+class CommentListView(generics.ListAPIView):
+    serializer_class = CommentSerializer
+
+    def get_queryset(self):
+        post_id = self.request.query_params.get("post_id")
+        if not post_id:
+            return CommentModel.objects.none()
+        return CommentModel.objects.filter(post__id=post_id)

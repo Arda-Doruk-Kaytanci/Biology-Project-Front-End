@@ -1,0 +1,49 @@
+.crop-info-page-container {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #A5CC6B;
+    border: #524526 3px solid;
+    border-radius: 15px;
+    height: 120vh;
+    margin-top: 7rem;
+    box-shadow: 10px 10px 10px 10px #3f351c;
+}
+
+.crop-info-page-container img {
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    border-radius: 3%;
+    border: 5px solid #3f351c;
+    margin-top: 3rem;
+    height: 50%;
+}
+
+.crop-info-page-container h1{
+    margin-top: 1.5rem;
+}
+
+.crop-info-page-container > h2{
+    text-align: center;
+}
+
+.crop-info-page-container h3{
+    width: 40%;
+    margin-top: 0.5rem;
+    margin-left: 20%;
+}
+
+ .main-header{
+    text-align: center;
+    margin-bottom: 1rem;
+ }
+
+ .crop-info-page-container p{
+    margin-top: 2rem;
+    font-size: 1.3rem;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 600;
+ }

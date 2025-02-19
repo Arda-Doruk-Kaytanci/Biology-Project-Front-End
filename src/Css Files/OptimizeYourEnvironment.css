@@ -1,167 +1,178 @@
 .add-device {
-    border-radius: 10%;
-    background-color: #A1BA89;
-    border: 2px #34623F solid;
-    padding: 5px;
-    font-size: 1.2rem;
-    text-align: center;
-    align-self: center;
-    justify-self: center;
-    margin-top: 10vh;
-    transition: all 0.3s;
-    
+  border-radius: 10%;
+  background-color: #a1ba89;
+  border: 2px #34623f solid;
+  padding: 5px;
+  font-size: 1.2rem;
+  text-align: center;
+  align-self: center;
+  justify-self: center;
+  margin-top: 10vh;
+  transition: all 0.3s;
 }
 
+.optimize-select {
+  height: 2rem;
+  width: 20%;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2vh;
+  border-radius: 10px;
+  background-color: #a1ba89;
+  border: 2px #34623f solid;
+  transition: all 0.2s;
+}
 .add-device:active {
-    border-color: #A5CC6B;
-    transform: scale(1.05);
-    background-color: #768948;
-    color: #92BDA3;
+  border-color: #a5cc6b;
+  transform: scale(1.05);
+  background-color: #768948;
+  color: #92bda3;
 }
 
 .add-device:hover {
-    transform: scale(1.2);
+  transform: scale(1.2);
 }
 
 .form-container {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-container label {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    margin-top: 3vh;
-    margin-bottom: 1vh;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 3vh;
+  margin-bottom: 1vh;
 }
 
 .form-container label input {
-
-    width: 30vw;
-    margin-left: 35vw;
-    margin-top: 2vh;
-    border-radius: 10px;
-    background-color: #A1BA89;
-    border: 2px #34623F solid;
-    transition: all 0.2s;
+  width: 30vw;
+  margin-left: 35vw;
+  margin-top: 2vh;
+  border-radius: 10px;
+  background-color: #a1ba89;
+  border: 2px #34623f solid;
+  transition: all 0.2s;
+  padding: 0.2rem
 }
 
 .form-container label input::-webkit-inner-spin-button {
-    appearance: none;
+  appearance: none;
 }
 
 .form-container label p {
-    font-size: 1.2rem;
+  font-size: 1.2rem;
 }
 
 .form-container label input:focus {
-    border: 3px #1E2F23 solid;
-    outline: none;
-    transform: scale(1.02);
+  border: 3px #1e2f23 solid;
+  outline: none;
+  transform: scale(1.02);
 }
 
 form {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 #device-adder-container {
-    margin-top: 3vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5vh;
+  margin-top: 3vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5vh;
 }
 
 #submit-btn {
-    width: 30vw;
-    border-radius: 10px;
-    background-color: #A1BA89;
-    border: 2px #34623F solid;
-    padding: 5px;
-    font-size: 1.2rem;
-    text-align: center;
-    align-self: center;
-    justify-self: center;
-    margin-top: 10vh;
-    transition: all 0.3s;
+  width: 30vw;
+  border-radius: 10px;
+  background-color: #a1ba89;
+  border: 2px #34623f solid;
+  padding: 5px;
+  font-size: 1.2rem;
+  text-align: center;
+  align-self: center;
+  justify-self: center;
+  margin-top: 3vh;
+  transition: all 0.3s;
 }
 
 #submit-btn:hover {
-    transform: scale(1.2);
+  transform: scale(1.2);
 }
 
 .device-adder {
-    display: flex;
-    gap: 1vw;
+  display: flex;
+  gap: 1vw;
 }
 
 .device-adder label {
-    font-size: 1.2rem;
-    display: flex;
-    gap: 1vw;
+  font-size: 1.2rem;
+  display: flex;
+  gap: 1vw;
 }
 
 .delete-btn {
-    font-size: 1.2rem;
-    width: 7.5vw;
-    border-radius: 10px;
-    background-color: #A1BA89;
-    transition: all 0.2s;
-    border: 2px #34623F solid;
+  font-size: 1.2rem;
+  width: 7.5vw;
+  border-radius: 10px;
+  background-color: #a1ba89;
+  transition: all 0.2s;
+  border: 2px #34623f solid;
 }
 
 .delete-btn:active {
-    outline: none;
-    background: rgb(90, 13, 13);
-    border-color: rgb(156, 97, 20);
-    transform: scale(1.02);
+  outline: none;
+  background: rgb(90, 13, 13);
+  border-color: rgb(156, 97, 20);
+  transform: scale(1.02);
 }
 
 .device-adder label input {
-    border-radius: 10px;
-    padding: 5px;
-    background-color: #A1BA89;
-    border: 2px #34623F solid;
-    transition: 0.2s all;
+  border-radius: 10px;
+  padding: 5px;
+  background-color: #a1ba89;
+  border: 2px #34623f solid;
+  transition: 0.2s all;
 }
 
 .device-adder label input::-webkit-inner-spin-button {
-    appearance: none;
+  appearance: none;
 }
 
 .device-adder label input:focus {
-    border: 3px #1E2F23 solid;
-    outline: none;
-    transform: scale(1.02);
+  border: 3px #1e2f23 solid;
+  outline: none;
+  transform: scale(1.02);
 }
 
 .crop-li {
-    font-size: 1.3rem;
-    margin-top: 5vh;
-    margin-bottom: 5vh;
-    height: 15vh;
-    text-align: center;
-    list-style: none;
-    width: 30vw;
-    background-color: #A1BA89;
-    border: 2px #34623F solid;
+  font-size: 1.3rem;
+  margin-top: 5vh;
+  margin-bottom: 5vh;
+  height: 15vh;
+  text-align: center;
+  list-style: none;
+  width: 30vw;
+  background-color: #a1ba89;
+  border: 2px #34623f solid;
 }
-.response-container{
-    margin-top: 10vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.response-container {
+  margin-top: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .crops-container {
-    margin-top: 10vh;
-    width: fit-content;
-    display: grid;
-    grid-template-columns: 30vw 30vw;
-    grid-template-rows: 15vh;
-    row-gap: 5vh;
-    column-gap: 5vw;
-    flex-direction: column;
-    align-items: center;
+  margin-top: 10vh;
+  display: grid;
+  margin-right: 7.5vw;
+  grid-template-columns: 25vw 25vw 25vw;
+  grid-template-rows: 15vh;
+  row-gap: 5vh;
+  column-gap: 5vw;
+  margin-bottom: 3rem;
 }

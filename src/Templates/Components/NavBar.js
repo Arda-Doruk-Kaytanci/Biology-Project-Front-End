@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useContext } from "react";
 import "../../Css Files/ComponentCss/NavBar.css";
 import { Link, Route, Routes, useLocation } from "react-router-dom";
 import HomePage from "../HomePage";
@@ -11,8 +11,42 @@ import Optimize from "../OptimizeYourEnvironment";
 import Article2 from "../Article2";
 import Article3 from "../Article3";
 import CropsCategory from "../CropsCategory";
+import { CropContext } from "../../CropsContext";
+import CropInfoPage from "../CropInfoPage";
+import Community from "../Community";
 const NavBar = forwardRef((props, ref) => {
   const currLoc = useLocation();
+  const plants = useContext(CropContext);
+
+  const CropRoutes = () => {
+    return (
+      <>
+        {plants.map((item) => (
+          <Route
+            key={item.name}
+            path={`/crops/${item.name}`}
+            element={
+              <CropInfoPage
+                name={item.name}
+                src={item.src}
+                short={item.shortDescription}
+                long={item.longDescription}
+                temp={item.preferredTemperature}
+                altitude={item.altitude}
+                water={item.wateringPerDay}
+                cost={item.maintenanceCost}
+                light={item.lightRequired}
+                grow={item.growingSeason}
+                harvest={item.harvestTime}
+                science = {item.scientificName}
+              />
+            }
+          />
+        ))}
+      </>
+    );
+  };
+  
   const isHere = (loc) => {
     return currLoc.pathname === loc ? true : false;
   };
@@ -69,10 +103,18 @@ const NavBar = forwardRef((props, ref) => {
           >
             Bitkiler
           </Link>
+          <Link
+            className="nav-bar-link"
+            to="/community"
+            style={{ color: isHere("/community") ? "#34623F" : "#A1BA89" }}
+          >
+            Topluluk
+          </Link>
         </nav>
       </div>
 
       <Routes>
+        {CropRoutes()}
         <Route path="/" element={<HomePage />}></Route>
         <Route path="/save-us" element={<SaveUs />}></Route>
         <Route path="/articles/article-1" element={<Article1 />}></Route>
@@ -82,6 +124,7 @@ const NavBar = forwardRef((props, ref) => {
         <Route path="/get-educated" element={<Optimize />}></Route>
         <Route path="/contributers" element={<Contributers />}></Route>
         <Route path="/crops" element={<CropsCategory />}></Route>
+        <Route path="/community" element={<Community />}></Route>
       </Routes>
     </>
   );
